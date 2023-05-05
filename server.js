@@ -63,10 +63,17 @@ app.post('/api/notes', (req, res) => {
                     }
                 });
             }
-        })
+        });
+
+        const response = {
+            status: 'success',
+            body: newNote,
+        };
+
+        res.json(response);
 
     } else {
-        res.json('Error in posting feedback');
+        res.json('Error in adding new note.');
     }
 });
 
