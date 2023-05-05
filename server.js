@@ -2,7 +2,6 @@ const express = require('express');
 const path = require('path');
 const fs = require('fs');
 const generateUniqueId = require('generate-unique-id');
-const { readFromFile, readAndAppend } = require('./utils/fsUtils');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -13,13 +12,27 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(express.static('public'));
 
+// app.get('*', (req, res) =>
+//     res.sendFile(path.join(__dirname, 'public/index.html'))
+// );
 
 // GET Route for notes page
 app.get('/notes', (req, res) =>
     res.sendFile(path.join(__dirname, '/public/notes.html'))
 );
 
+//Get all notes
+app.get('/api/notes', (req, res) => {
+    fs.readFile('./db/db.json', (err, data) => {
+        if (err) {
+                console.error(err);
+            } else {
+            res.json(JSON.parse(data))
+        }
+    })
+});
 
+//save new note
 app.post('/api/notes', (req, res) => {
     res.json(`${req.method} request received`);
 
@@ -35,7 +48,22 @@ app.post('/api/notes', (req, res) => {
             noteId: generateUniqueId(),
         };
 
-        readAndAppend(newNote, './db/db.json');
+        fs.readFile( './db/db.json', (err, data) => {
+            if (err) {
+                console.error(err);
+            } else {
+                const parsedData = JSON.parse(data);
+                parsedData.push(newNote);
+                stringData = JSON.stringify(parsedData, null, 4);
+                fs.writeFile('./db/db.json', stringData, (err) => {
+                    if (err) {
+                        console.error(err);
+                    } else {
+                        console.log("Data written to db.json");
+                    }
+                });
+            }
+        })
 
     } else {
         res.json('Error in posting feedback');
