@@ -37,15 +37,15 @@ app.post('/api/notes', (req, res) => {
     res.json(`${req.method} request received`);
 
     // Destructuring assignment for the items in req.body
-    const { noteTitile, noteText } = req.body;
+    const { title, text } = req.body;
 
     // If all the required properties are present
-    if (noteTitile && noteText) {
+    if (title && text) {
         // Variable for the object we will save
         const newNote = {
-            noteTitile,
-            noteText,
-            noteId: generateUniqueId(),
+            title,
+            text,
+            id: generateUniqueId(),
         };
 
         fs.readFile( './db/db.json', (err, data) => {

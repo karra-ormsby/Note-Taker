@@ -1,17 +1,22 @@
 [
     {
-        "noteTitile": "Hello",
-        "noteText": "Hi Onie",
-        "noteId": "a955i1r9yv8gn18h9nix"
+        "title": "New note",
+        "text": "Note body",
+        "id": "h92ubvj31ks4t1pmiglr"
     },
     {
-        "noteTitile": "Hello",
-        "noteText": "Hi Fennel",
-        "noteId": "l9lcmk1ra0bym4w965gn"
+        "title": "New note",
+        "text": "Note body",
+        "id": "5p0cc5gs6ju8lb5rn6p7"
     },
     {
-        "noteTitile": "Hello",
-        "noteText": "Hi Fennel",
-        "noteId": "x725frx5l4pgmrdlkzlk"
+        "title": "Hello",
+        "text": "Fennel",
+        "id": "5vlum72srpxb84f1qeq7"
+    },
+    {
+        "title": "Hello onie",
+        "text": "Fennel",
+        "id": "0ezab4qsq3nzu164z665"
     }
 ]
