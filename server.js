@@ -12,10 +12,6 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(express.static('public'));
 
-app.get('*', (req, res) =>
-    res.sendFile(path.join(__dirname, 'public/index.html'))
-);
-
 // GET Route for notes page
 app.get('/notes', (req, res) =>
     res.sendFile(path.join(__dirname, '/public/notes.html'))
@@ -32,7 +28,7 @@ app.get('/api/notes', (req, res) => {
     })
 });
 
-//save new note
+//Save new note
 app.post('/api/notes', (req, res) => {
     res.json(`${req.method} request received`);
 
@@ -69,6 +65,11 @@ app.post('/api/notes', (req, res) => {
     }
 });
 
+app.get('*', (req, res) =>
+    res.sendFile(path.join(__dirname, 'public/index.html'))
+);
+
+//Delte specific note, chosen by id
 app.delete('/api/notes/:id', (req, res) => {
     fs.readFile('./db/db.json', (err, data) => {
         let newNotesArray
@@ -77,18 +78,18 @@ app.delete('/api/notes/:id', (req, res) => {
         } else {
             const noteId = req.params.id;
             const parsedData = JSON.parse(data);
-            for (let i = 0; i < parsedData.length; i++) {
-                const currentNote = parsedData[i];
-                if(currentNote.id === noteId) {
-                    newNotesArray = parsedData.slice(i);
-                    console.log(newNotesArray);
-                }
-            }
+
+            newNotesArray = parsedData.filter((currNote) => {
+                return currNote.id != noteId;
+            });
+
             fs.writeFile('./db/db.json', JSON.stringify(newNotesArray, null, 4), (err) => {
                 if (err) {
                     console.error(err);
+                    res.status(400).json(err);
                 } else {
                     console.log("Data written to db.json");
+                    res.status(200).json(newNotesArray);
                 }
             });
         }
