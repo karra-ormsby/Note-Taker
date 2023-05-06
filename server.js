@@ -12,9 +12,9 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(express.static('public'));
 
-// app.get('*', (req, res) =>
-//     res.sendFile(path.join(__dirname, 'public/index.html'))
-// );
+app.get('*', (req, res) =>
+    res.sendFile(path.join(__dirname, 'public/index.html'))
+);
 
 // GET Route for notes page
 app.get('/notes', (req, res) =>
@@ -52,11 +52,9 @@ app.post('/api/notes', (req, res) => {
             if (err) {
                 console.error(err);
             } else {
-                console.log(data);
                 const parsedData = JSON.parse(data);
-                console.log(parsedData.length);
                 parsedData.push(newNote);
-                stringData = JSON.stringify(parsedData, null, 4);
+                const stringData = JSON.stringify(parsedData, null, 4);
                 fs.writeFile('./db/db.json', stringData, (err) => {
                     if (err) {
                         console.error(err);
@@ -66,42 +64,36 @@ app.post('/api/notes', (req, res) => {
                 });
             }
         });
-
-        // const response = {
-        //     status: 'success',
-        //     body: newNote,
-        // };
-
-        // res.json(response);
-
     } else {
         res.json('Error in adding new note.');
     }
 });
 
-// app.delete('/api/notes/:id', (req, res) => {
-//     fs.readFile('./db/db.json', (err, data) => {
-//         if (err) {
-//             console.error(err);
-//         } else {
-//             console.log(req);
-//             // console.log(req.params);
-//             console.log(req.params.id);
-//             const noteId = req.params.id;
-//             console.log(noteId)
-//             const parsedData = JSON.parse(data);
-//             console.log(parsedData.length);
-//             for (let i = 0; i < parsedData.length; i++) {
-//                 const currentNote = parsedData[i];
-//                 if(currentNote.id === noteId) {
-//                     //note found with matching id. Now delete it
-//                     console.log("found note id");
-//                 }
-//             }
-//             //fs.write to write the new data (data minus the deleted note)
-//         }
-//     });
-// })
+app.delete('/api/notes/:id', (req, res) => {
+    fs.readFile('./db/db.json', (err, data) => {
+        let newNotesArray
+        if (err) {
+            console.error(err);
+        } else {
+            const noteId = req.params.id;
+            const parsedData = JSON.parse(data);
+            for (let i = 0; i < parsedData.length; i++) {
+                const currentNote = parsedData[i];
+                if(currentNote.id === noteId) {
+                    newNotesArray = parsedData.slice(i);
+                    console.log(newNotesArray);
+                }
+            }
+            fs.writeFile('./db/db.json', JSON.stringify(newNotesArray, null, 4), (err) => {
+                if (err) {
+                    console.error(err);
+                } else {
+                    console.log("Data written to db.json");
+                }
+            });
+        }
+    });
+})
 
 
 
