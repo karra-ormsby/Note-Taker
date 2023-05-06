@@ -52,7 +52,9 @@ app.post('/api/notes', (req, res) => {
             if (err) {
                 console.error(err);
             } else {
+                console.log(data);
                 const parsedData = JSON.parse(data);
+                console.log(parsedData.length);
                 parsedData.push(newNote);
                 stringData = JSON.stringify(parsedData, null, 4);
                 fs.writeFile('./db/db.json', stringData, (err) => {
@@ -65,17 +67,42 @@ app.post('/api/notes', (req, res) => {
             }
         });
 
-        const response = {
-            status: 'success',
-            body: newNote,
-        };
+        // const response = {
+        //     status: 'success',
+        //     body: newNote,
+        // };
 
-        res.json(response);
+        // res.json(response);
 
     } else {
         res.json('Error in adding new note.');
     }
 });
+
+// app.delete('/api/notes/:id', (req, res) => {
+//     fs.readFile('./db/db.json', (err, data) => {
+//         if (err) {
+//             console.error(err);
+//         } else {
+//             console.log(req);
+//             // console.log(req.params);
+//             console.log(req.params.id);
+//             const noteId = req.params.id;
+//             console.log(noteId)
+//             const parsedData = JSON.parse(data);
+//             console.log(parsedData.length);
+//             for (let i = 0; i < parsedData.length; i++) {
+//                 const currentNote = parsedData[i];
+//                 if(currentNote.id === noteId) {
+//                     //note found with matching id. Now delete it
+//                     console.log("found note id");
+//                 }
+//             }
+//             //fs.write to write the new data (data minus the deleted note)
+//         }
+//     });
+// })
+
 
 
 app.listen(PORT, () =>
