@@ -17,28 +17,29 @@ note.get('/', (req, res) => {
 note.post('/', (req, res) => {
     res.json(`${req.method} request received`);
 
-    // Destructuring assignment for the items in req.body
+    //Destructuring assignment for the items in req.body
     const { title, text } = req.body;
 
-    // If all the required properties are present then we can save the new note
+    //If all the required properties are present then we can save the new note
     if (title && text) {
-        // Object to store the new note in
+
+        //Object to store the new note in
         const newNote = {
             title,
             text,
             id: generateUniqueId(),
         };
 
-        //reading the saved data from its file
+        //Reading the saved data from its file
         fs.readFile('./db/db.json', (err, data) => {
             if (err) {
                 console.error(err);
             } else {
                 const parsedData = JSON.parse(data);
-                //adding the new note to the end of the notes
+                //Adding the new note to the end of the notes
                 parsedData.push(newNote);
                 const stringData = JSON.stringify(parsedData, null, 4);
-                //re-writting the save file with the newly created data
+                //Re-writting the save file with the newly created data
                 fs.writeFile('./db/db.json', stringData, (err) => {
                     if (err) {
                         console.error(err);
@@ -55,7 +56,7 @@ note.post('/', (req, res) => {
 
 //Delte specific note, chosen by id
 note.delete('/:id', (req, res) => {
-    //reading the saved data from its file
+    //Reading the saved data from its file
     fs.readFile('./db/db.json', (err, data) => {
         let newNotesArray
         if (err) {
@@ -64,12 +65,12 @@ note.delete('/:id', (req, res) => {
             const noteId = req.params.id;
             const parsedData = JSON.parse(data);
 
-            //filter through all the notes in teh array. If their ID does not match the one we are searching for, then add it to a new array
+            //Filter through all the notes in the array. If their ID does not match the one we are searching for, then add it to a new array
             newNotesArray = parsedData.filter((currNote) => {
                 return currNote.id != noteId;
             });
 
-            //re-writting the save file with the newly created array
+            //Re-writting the save file with the newly created array
             fs.writeFile('./db/db.json', JSON.stringify(newNotesArray, null, 4), (err) => {
                 if (err) {
                     console.error(err);
