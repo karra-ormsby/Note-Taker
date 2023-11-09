@@ -8,12 +8,11 @@ Given some front-end starter code for a note taking application, I have added ba
 
   - [Installation](#installation)
   - [Usage](#usage)
-  - [License](#license)
   - [Credits](#credits)
 
 ## Installation
 
-This application is deployed using Heroku. No installation is needed. To use the application visit https://note-taker-ko.herokuapp.com/notes.
+This application is deployed using Heroku. No installation is needed. To use the application visit https://my-note-taker-app-2023-b1187e79f9a4.herokuapp.com/.
 
 ## Usage
 

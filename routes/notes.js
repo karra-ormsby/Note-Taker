@@ -13,10 +13,10 @@ note.get('/', (req, res) => {
     })
 });
 
+
 //Save new note
 note.post('/', (req, res) => {
     res.json(`${req.method} request received`);
-
     //Destructuring assignment for the items in req.body
     const { title, text } = req.body;
 
